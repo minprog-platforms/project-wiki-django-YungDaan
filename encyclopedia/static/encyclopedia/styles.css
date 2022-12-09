@@ -1,6 +1,33 @@
 body {
     margin: 0;
     background-color: white;
+    height: 100%;
+}
+
+pre{
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45 !important;
+    background-color: white;
+    border-radius: 6px;
+    height: auto;
+    width:70%;
+}
+
+pre code {
+    white-space: pre;
+    background-color: white; 
+    overflow: visible;
+    color: grey;
+    display: inline;
+    border-radius: 60px;
+}
+
+pre >code{
+    word-break: normal;
+    white-space: pre;
+    background: transparent;  
+    
 }
 
 code {
@@ -27,12 +54,174 @@ textarea {
     line-height: 15px;
 }
 
+#search {
+    position: relative;
+    background-color: white;
+    color: white;
+    border: transparent;
+    font-size: 1.8rem;
+    margin-top: 4rem;
+    height: 3rem;
+    margin-left: 25%;
+    border-radius: 6px;
+}
+
+#search:hover {
+    background-color: blue;
+}
+
+.nav {
+    border-bottom: 4px lightskyblue;
+    font-size: 2rem;
+    color: grey;
+}
+
+.navigationbar {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+.navbar {
+    border-bottom: 2px lightskyblue;
+    background-color: white;
+}
+
+.navitem a{
+    color: grey;
+    font-size: 2rem;
+    position: relative;
+}
+
+.nav-item:hover{
+    border-bottom: 4px lightskyblue;
+}
+
+.nav-item {
+    margin-left: 5rem;
+}
+
+.navbar-brand h1 {
+    font-weight: 900;
+    font-size: 6rem;
+    color: black;
+    text-align: left;
+    font-family: 'Times New Roman', Times, serif;
+    margin-left: 20px;
+}
+
 .sidebar {
     background-color: #f0f0f0;
-    height: 100vh;
+    margin-top: -16px;
     padding: 20px;
+    font-size: 1.5rem;
+}
+
+.sidebar:after {
+    border: 1.5px black;
+}
+
+#show_list {
+    position: relative;
+    white-space:wrap;
+    columns: 100px 2;
+    column-gap: 40px;
+    column-rule-width: 1px
+}
+
+#show_list li{
+    white-space: pre-line;
+    margin-bottom: 10px;
+    position: relative;
+    white-space: nowrap;
+    color: lightcoral;
+    font-size: 1.5rem;
+}
+
+#show_list a{
+    white-space: pre-line;
+    margin-bottom: 10px;
+    position: relative;
+    white-space: nowrap;
+    color: blue;
+    font-size: 1.5rem;
+}
+
+#search_result {
+    position: relative;
+    white-space:wrap;
+    columns: 100px 2;
+    column-gap: 40px;
+    column-rule-width: 1px; 
+}
+
+#search_result li{
+    white-space: pre-line;
+    margin-bottom: 10px;
+    position: relative;
+
+    white-space: nowrap;
+    color: orange;
+    font-size: 1.5rem;
+}
+
+#search_result a{
+    margin-bottom: 10px;
+    position: relative;
+    white-space: nowrap;
+    color: blue;
+    font-size: 1.5rem;
+}
+
+#createpage{
+    text-align: center;
+    left: 40%;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    position: relative;
+    background-color: mediumblue;
+    color: white;
+    border: transparent;
+    font-size: 2rem;
+    border-radius: 6px ;
+}
+
+#createpage:hover{
+    background-color: lightgreen;
 }
 
 .sidebar h2 {
     margin-top: 5px;
+}
+
+label{
+    font-size: 1.7rem;
+    display: block;
+    margin-left: 5px;
+}
+[type =text]{
+    text-align: center;
+    border-radius: 6px ;
+    margin-top: 20px;
+    margin-left:5px;
+    margin-right: 15px;
+    position: relative;
+    width:100% ;
+    font-size: 1.7rem;
+
+}
+textarea{
+    font-size: 1.7rem;
+    width:100%;
+    border-radius: 6px ;
+    margin-top: 20px;
+    margin-left:5px;
+    margin-right: 0px;
+    
+}
+.helptext{
+    font-size: 1rem;
+    color: black;
+    float:right;
+    margin-right: 100px;
 }
