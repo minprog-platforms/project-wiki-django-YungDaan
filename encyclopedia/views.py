@@ -19,6 +19,7 @@ def index(request):
     })
 
 def entry(request, title):
+    """Checks if the file exists in html form and if not return None, if it does return that page"""
     html_content = convert_to_html(title)
     if html_content == None:
         return render(request, "encyclopedia/error.html", {
@@ -31,6 +32,8 @@ def entry(request, title):
         })
 
 def search(request):
+    """Checks if the search request is in the entries in html form if not return None,
+    if it does loop through the list recommendation to allow see if there is a suggestion"""
     if request.method == "POST":
         entry_search = request.POST['q']
         html_content = convert_to_html(entry_search)
@@ -67,5 +70,3 @@ def new_page(request):
                 "title": title,
                 "content": html_content
             })
-                
-            
