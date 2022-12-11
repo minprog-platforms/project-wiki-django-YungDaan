@@ -1,75 +1,71 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.urls import reverse
-from django.core.files import File
-from . import util,forms
-from random import choice
+from markdown2 import Markdown
 
-form = forms.newsearch()
+from . import util
+
+def convert_to_html(title):
+    """Checks if the file exists if it doesn't exist return None.
+    If it does exist convert the markdown file to html"""
+    content = util.get_entry(title)
+    markdowner = Markdown()
+    if content == None:
+        return None
+    else:
+        return markdowner.convert(content)
 
 def index(request):
-
-    entries = util.list_entries()
     return render(request, "encyclopedia/index.html", {
-        "entries": entries,
-        "form" : form
+        "entries": util.list_entries()
     })
 
-def get_page(request, title):
+def entry(request, title):
+    html_content = convert_to_html(title)
+    if html_content == None:
+        return render(request, "encyclopedia/error.html", {
+            "message": "Entry does not exist"
+        })
+    else:
+        return render(request, "encyclopedia/entry.html", {
+            "title": title,
+            "content": html_content,
+        })
 
-    page = util.get_entry(title)
-
-    if page is None:
-        return render(request,"encyclopedia/error.html", {"form": form})
-
-    return render(request, "encyclopedia/titlepage.html", {"title": title, "content": page, "form": form})
-
-def get_search_query(request):
-    if request.method == "GET":
-        form = forms.NewSearchForm(request.GET)
-
-        if form.is_Valid():
-            searchquery = form.cleaned_data["search"].lower()
-            all_entries = util.list_entries()
-
-            files = [filename for filename in all_entries if searchquery in filename.lower()]
-
-            if len(files) == 0:
-                return render(request, "encyclopedia/search_results.html", {"error": "No results", "form": form})
-
-            elif len(files) == 1 and files[0].lower() == searchquery:
-                title = files[0]
-                return get_page(request, title)
-
-            else:
-                if len(title) > 0:
-                    return get_page(request, title[0])
-                else:
-                    return render(request, "encyclopedia/search_results.html", {"results": files, "form": form})
-
+def search(request):
+    if request.method == "POST":
+        entry_search = request.POST['q']
+        html_content = convert_to_html(entry_search)
+        if html_content is not None:
+            return render(request, "encyclopedia/entry.html", {
+                "title": entry_search,
+                "content": html_content
+            })
         else:
-            return index(request)
-
-    return index(request)
+            all_entries = util.list_entries()
+            recommendation = []
+            for entry in all_entries:
+                if entry_search.lower() in entry.lower():
+                    recommendation.append(entry)
+            return render(request, "encyclopedia/search.html", {
+                "recommendation": recommendation
+            })
 
 def new_page(request):
     if request.method == "GET":
-        create_form = forms.newpage()
-        return render(request, "encyclopedia/new_page.html", {"form": form, "create_form": create_form})
+        return render(request, "encyclopedia/new.html")
     else:
-        create_form = forms.newpage(request.POST)
-        if create_form.is_Valid():
-            title = create_form.cleaned_data["pagename"]
-            body = create_form.cleaned_data["body"]
-            all_entries = util.list_entries()
-            for filename in all_entries:
-                if title.lower() == filename.lower():
-                    create_form = forms.newpage()
-                    error_message = "Page exists with the title '%s' \n try again with different title" %filename
-                    return render(request, "encyclodepia/create_page.html", { "form": form, "create_form": create_form, "error": error_message})
-            
-            util.save_entry(title, body)
-            return get_page(request, title)
-
+        title = request.POST['title']
+        content = request.POST['content']
+        titleExist = util.get_entry(title)
+        if titleExist is not None:
+            return render(request, "encyclopedia/error.html", {
+                "message": "Entry page already exists"
+            })
         else:
-            return render(request, "encyclopedia/create_page.html", {"form": form, "create_form": create_form})
+            util.save_entry(title, content)
+            html_content = convert_to_html(title)
+            return render(request, "encyclopedia/entry.html", {
+                "title": title,
+                "content": html_content
+            })
+                
+            
